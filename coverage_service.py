@@ -16,6 +16,7 @@ PIN_BINARY_PATH = "/bin/pin"
 COVERAGE_SO_PATH = "/tmp/fuzzer/CodeCoverage.so"
 COVERAGE_FILE_PATH = "/tmp/fuzzer/trace.log"
 LOG_FILE = "/tmp/fuzzer/coverage.log"
+FUZZER_DIR = "/tmp/fuzzer"
 
 
 def check_pid(pid):
@@ -103,6 +104,7 @@ def setup_logger():
 
 
 def main():
+    os.chdir(FUZZER_DIR)
     setup_logger()
     start_coverage()
 
