@@ -101,6 +101,7 @@ def setup_logger():
     consoleHandler = logging.StreamHandler()
     consoleHandler.setFormatter(logFormatter)
     rootLogger.addHandler(consoleHandler)
+    rootLogger.setLevel(logging.DEBUG)
 
 
 def main():
