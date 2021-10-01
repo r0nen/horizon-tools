@@ -85,7 +85,7 @@ def start_coverage(filter=None):
                 os.environ['__TARGET_SYMBOL'] = env_map['__TARGET_SYMBOL']
                 os.environ['__FUZZFILE'] = posixpath.join(queue_dir, f)
                 ret_code = subprocess.run([PIN_BINARY_PATH, "-t", COVERAGE_SO_PATH, "-w",
-                                           env_map["__TARGET_FUZZEE"] + ".so", "--", HORIZON_BINARY_PATH], stdout=subprocess.DEVNULL)
+                                           env_map["__TARGET_FUZZEE"] + ".so"+"clean", "--", HORIZON_BINARY_PATH], stdout=subprocess.DEVNULL)
                 if ret_code.returncode:
                     logging.error("Failed to collect coverage: {0}".format(ret_code))
                 else:
