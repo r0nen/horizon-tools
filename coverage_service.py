@@ -57,9 +57,11 @@ def get_env(pid):
     return env_map
 
 
-def start_coverage():
+def start_coverage(filter=None):
     logging.info("Starting coverage collection...")
     for fuzzer in get_fuzzers():
+        if filter and filter not in fuzzer['path']:
+            continue
         pid = fuzzer['pid']
         fuzzer_out_path = fuzzer['path']
         env_map = get_env(pid)
@@ -79,7 +81,7 @@ def start_coverage():
                 logging.info("Creating coverage: {0}".format(coverage_file))
                 os.environ['LD_PRELOAD'] = env_map['AFL_PRELOAD']
                 os.environ['__TARGET_FUZZEE'] = env_map['__TARGET_FUZZEE']
-                os.environ['__TARGET_FUZZEE_PATH'] = env_map['__TARGET_FUZZEE_PATH']
+                os.environ['__TARGET_FUZZEE_PATH'] = env_map['__TARGET_FUZZEE_PATH']+"clean"
                 os.environ['__TARGET_SYMBOL'] = env_map['__TARGET_SYMBOL']
                 os.environ['__FUZZFILE'] = posixpath.join(queue_dir, f)
                 ret_code = subprocess.run([PIN_BINARY_PATH, "-t", COVERAGE_SO_PATH, "-w",
@@ -105,9 +107,12 @@ def setup_logger():
 
 
 def main():
+    filter = None
+    if len(sys.argv) > 1:
+        filter = sys.argv[1]
     os.chdir(FUZZER_DIR)
     setup_logger()
-    start_coverage()
+    start_coverage(filter)
 
 
 if __name__ == "__main__":
